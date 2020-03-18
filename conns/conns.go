@@ -1,4 +1,4 @@
-package main
+package conns
 
 import (
 	"log"
@@ -16,28 +16,28 @@ type Conns struct {
 
 var conns *Conns
 
-func initConons() {
+func InitConons() {
 	conns = &Conns{
 		connections: map[string]net.Conn{},
 		lock:        &sync.RWMutex{},
 	}
 }
 
-func addConn(conn net.Conn) {
+func AddConn(conn net.Conn) {
 	conns.lock.Lock()
 	defer conns.lock.Unlock()
 
 	conns.connections[conn.RemoteAddr().String()] = conn
 }
 
-func removeConn(con net.Conn) {
+func RemoveConn(con net.Conn) {
 	conns.lock.Lock()
 	defer conns.lock.Unlock()
 
 	delete(conns.connections, con.RemoteAddr().String())
 }
 
-func broadcast(data []byte) {
+func Broadcast(data []byte) {
 	conns.lock.RLock()
 	defer conns.lock.RUnlock()
 
