@@ -42,7 +42,7 @@ func Broadcast(data []byte) {
 	defer conns.lock.RUnlock()
 
 	for _, con := range conns.connections {
-		if err := wsutil.WriteServerText(con, data); err != nil {
+		if err := wsutil.WriteClientBinary(con, data); err != nil {
 			log.Println(err.Error())
 		}
 	}
